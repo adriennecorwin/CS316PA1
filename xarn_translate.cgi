@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import cgi
 import cgitb
@@ -16,9 +16,9 @@ def store():
 	bigData=[]
 	file = open("xarn_language.txt", "r")
 	for line in file:
-		line=line.rstrip()
-        	smallData = line.split(",")
-        	bigData.append(smallData)
+		line=line.rstrip()	
+		smallData = line.split(",")
+		bigData.append(smallData)
 #	print(bigData)
 	file.close()
 	return bigData
@@ -35,10 +35,10 @@ def translate(bigData, originLang, transLang, theWord):
 	counter=0
 	while not found and counter<len(bigData):
 		checkRow=bigData[counter]
-    		if theWord == checkRow[firstWordCol] and originLang == checkRow[firstLangCol] and transLang == checkRow[secondLangCol]:
+		if theWord == checkRow[firstWordCol] and originLang == checkRow[firstLangCol] and transLang == checkRow[secondLangCol]:
 			translatedWord = checkRow[secondWordCol]
-        		found = True
-    		elif theWord == checkRow[secondWordCol] and originLang == checkRow[secondLangCol] and transLang == checkRow[firstLangCol]:
+			found = True
+		elif theWord == checkRow[secondWordCol] and originLang == checkRow[secondLangCol] and transLang == checkRow[firstLangCol]:
 			translatedWord = checkRow[firstWordCol]
 			found = True
 		else:
@@ -51,9 +51,9 @@ def translate(bigData, originLang, transLang, theWord):
 
 def main():
 	form=cgi.FieldStorage()
-	theWord = (form.getvalue('theword')).lower()
-        originLang (form.getvalue('fromnative')).lower()
-        transLang = (form.getvalue('newlanguage')).lower()
+	theWord = str(form.getvalue('theword')).lower()
+	originLang = str(form.getvalue('fromnative')).lower()
+	transLang = str(form.getvalue('newlanguage')).lower()
 	translationArray=store()
 	translatedWord=translate(translationArray, originLang, transLang, theWord)
 	showTranslation(originLang, transLang, theWord, translatedWord)
