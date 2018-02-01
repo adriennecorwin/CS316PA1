@@ -7,10 +7,16 @@ print("Content-type:text/html\n\n")
 cgitb.enable()
 
 def showTranslation(a, b, c, d):
-	print("Origin Language: %s\n" % a)
-	print("Requested Language: %s\n" % b)
-	print("Original word: %s\n" % c)
-	print("Translation: %s\n" % d)
+	print("<html><head><title>Translate</title></head><body>")
+	print("<p>Origin Language: ")
+	print("%s" % a)
+	print("</p><p>Requested Language: ")
+	print("%s" % b)
+	print("</p><p>Original word: ")
+	print("%s" % c)
+	print("</p><p>Translation: ")
+	print("%s" % d)
+	print("</p></body></html>")
 
 def store():
 	bigData=[]
