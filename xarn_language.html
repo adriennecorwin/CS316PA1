@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+    <title>Translation form</title>
+</head>
+
 <body>
 
-<form action="xarn_translate.cgi" method="GET">
-  theword:<br>
-  <input type="text" name="theword">
-  <br>
-  fromnative:<br>
-  <input type="text" name="fromnative">
-  <br>
-  newlanguage:<br>
-  <input type="text" name="newlanguage">
-  <br><br>
-  <input type="submit" value="Submit">
-</form> 
-
-<p>If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php".</p>
+    <form action="xarn_translate.cgi" method="GET">
+        The word:<br>
+        <input type="text" name="theword">
+        <br>
+        
+        From native:<br>
+        <input type="text" name="fromnative">
+        <br>
+        
+        New language:<br>
+        <input type="text" name="newlanguage">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form> 
 
 </body>
 </html>
