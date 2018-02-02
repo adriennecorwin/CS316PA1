@@ -3,20 +3,34 @@
 import cgi
 import cgitb
 
+NOTFOUND='unknown'
+NOVAL='none'
+MISSING='invalid'
+
 print("Content-type:text/html\n\n")
 cgitb.enable()
 
+
 def showTranslation(a, b, c, d):
+	print("<style> .found {color:green} .notfound {color:red} .proper{color:blue}</style>")
 	print("<html><head><title>Translate</title></head><body>")
-	print("<p>Origin Language: ")
+	print("<p><span class=\"proper\">Origin Language: </span>")
 	print("%s" % a)
-	print("</p><p>Requested Language: ")
+	print("</p><p><span class=\"proper\">Requested Language: </span>")
 	print("%s" % b)
-	print("</p><p>Original word: ")
+	print("</p><p><span class=\"proper\">Original word: </span>")
 	print("%s" % c)
-	print("</p><p>Translation: ")
-	print("%s" % d)
-	print("</p></body></html>")
+	print("</p><p><span class=\"proper\">Translation: </span>")
+	if d != NOTFOUND:
+		print("<span class=\"found\">")
+		print("%s" % d)
+		print("</span>")
+		print("</p></body></html>")
+	else:
+		print("<span class=\"notfound\">")
+		print("%s" % d)
+		print("</span>")
+		print("</p></body></html>")
 
 def store():
 	bigData=[]
@@ -50,19 +64,38 @@ def translate(bigData, originLang, transLang, theWord):
 		else:
 			counter=counter+1
 	if not found:
-		return "not found"
+		return NOTFOUND
 	else:
 #		print(translatedWord)
 		return translatedWord
 
 def main():
 	form=cgi.FieldStorage()
-	theWord = str(form.getvalue('theword')).lower()
-	originLang = str(form.getvalue('fromnative')).lower()
-	transLang = str(form.getvalue('newlanguage')).lower()
-	translationArray=store()
-	translatedWord=translate(translationArray, originLang, transLang, theWord)
-	showTranslation(originLang, transLang, theWord, translatedWord)
+	hadError=False
+	if str(form.getvalue('theword')).lower() == NOVAL:
+		hadError=True
+		theWord=MISSING
+	else:
+		theWord=str(form.getvalue('theword')).lower()
+
+	if str(form.getvalue('fromnative')).lower() == NOVAL:
+		hadError=True
+		originLang=MISSING
+	else:
+		originLang=str(form.getvalue('fromnative')).lower()
+
+	if str(form.getvalue('newlanguage')).lower() == NOVAL:
+		hadError=True
+		transLang=MISSING
+	else:
+		transLang=str(form.getvalue('newlanguage')).lower()
+
+	if hadError:
+		translatedWord=NOVAL
+		showTranslation(originLang, transLang, theWord, translatedWord)
+	else:
+		translationArray = store()
+		translatedWord = translate(translationArray, originLang, transLang, theWord)
+		showTranslation(originLang, transLang, theWord, translatedWord)
 
 if __name__=="__main__":main()
-
