@@ -48,34 +48,34 @@ def store():
 def translate(originLang, transLang, theWord):
 	translatedWord = ""
 
-        FIRSTLANG = 0
-        FIRSTWORD = 1
-        SECONDLANG = 2
-        SECONDWORD = 3
+	FIRSTLANG = 0
+	FIRSTWORD = 1
+	SECONDLANG = 2
+	SECONDWORD = 3
 
-        found = False
+	found = False
 
 	file = open("xarn_language.txt", "r")
 
-        for line in file:
+	for line in file:
 		line=line.rstrip()	
 		entry = line.split(",")
-                if theWord == entry[FIRSTWORD] and originLang == entry[FIRSTLANG] and transLang = entry[SECONDLAG]:
-                        translatedWord = entry[SECONDWORD]
-                        found = True
-                        break
-                elif theWord == entry[SECONDWORD] and originLang == entry[SECONDLANG] and transLang == entry[FIRSTLANG]:
-                        translatedWord = entry[FIRSTWORD]
-                        found = True
-                        break
+		if theWord == entry[FIRSTWORD] and originLang == entry[FIRSTLANG] and transLang == entry[SECONDLAG]:
+			translatedWord = entry[SECONDWORD]
+			found = True
+			break
+		elif theWord == entry[SECONDWORD] and originLang == entry[SECONDLANG] and transLang == entry[FIRSTLANG]:
+			translatedWord = entry[FIRSTWORD]
+			found = True
+			break
 # needs an else here? if we do an iterator it would be ++
 
-        file.close();
+	file.close();
 
-        if not found:
-                return NOTFOUND
-        else:
-                return translatedWord;
+	if not found:
+		return NOTFOUND
+	else:
+		return translatedWord;
 	
         
 def main():
@@ -83,7 +83,7 @@ def main():
 	hadError=False
 
 #error handling
-        if str(form.getvalue('theword')).lower() == NOVAL:
+	if str(form.getvalue('theword')).lower() == NOVAL:
 		hadError=True
 		theWord=MISSING
 	else:
