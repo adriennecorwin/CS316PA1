@@ -1,18 +1,16 @@
-#Adrienne Corwin and Angela Vichitbandha
 #!/usr/bin/python3
+#Adrienne Corwin and Angela Vichitbandha
+print("Content-type:text/html\n\n")
 
 import cgi
 import cgitb
+
+cgitb.enable()
 
 #constants to detect and print errors
 NOTFOUND='unknown'
 NOVAL='none'
 MISSING='invalid'
-
-
-
-print("Content-type:text/html\n\n")
-cgitb.enable()
 
 #produces an HTML document to show user the results of their translation request
 def showTranslation(a, b, c, d, e):
