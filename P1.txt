@@ -1,0 +1,21 @@
+CS 316-001 Spring 2018
+Project 1 Universal Translator
+By Adrienne Corwin and Angela Vichitbandha
+
+Outside references:
+    https://www.youtube.com/watch?v=-Lu8VgYSkNQ (for taking in and splitting input from a file)
+    https://www.tutorialspoint.com/python/string_lower.htm
+    https://stackoverflow.com/questions/5653533/indexerror-list-assignment-index-out-of-range
+    https://stackoverflow.com/questions/275018/how-can-i-remove-chomp-a-trailing-newline-in-python
+    http://legacy.python.org/workshops/1995-12/papers/shprentz.html
+    https://www.w3schools.com/tags/tag_style.asp
+
+The project url are
+    www.cs.uky.edu/~afco229/CS316PA1/xarn_language.html 
+    and
+    www.cs.uky.edu/~aavi226/CS316PA1/xarn_language.html
+    (runs the same file)
+
+Project discription
+    
+

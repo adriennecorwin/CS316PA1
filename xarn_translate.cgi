@@ -32,6 +32,7 @@ def showTranslation(a, b, c, d):
 		print("</span>")
 		print("</p></body></html>")
 
+#not called anywhere, added to the translate function
 def store():
 	bigData=[]
 	file = open("xarn_language.txt", "r")
@@ -43,36 +44,46 @@ def store():
 	file.close()
 	return bigData
 
-def translate(bigData, originLang, transLang, theWord):
+
+def translate(originLang, transLang, theWord):
 	translatedWord = ""
 
-	firstLangCol = 0
-	firstWordCol = 1
-	secondLangCol = 2
-	secondWordCol = 3
+        FIRSTLANG = 0
+        FIRSTWORD = 1
+        SECONDLANG = 2
+        SECONDWORD = 3
 
-	found = False
-	counter=0
-	while not found and counter<len(bigData):
-		checkRow=bigData[counter]
-		if theWord == checkRow[firstWordCol] and originLang == checkRow[firstLangCol] and transLang == checkRow[secondLangCol]:
-			translatedWord = checkRow[secondWordCol]
-			found = True
-		elif theWord == checkRow[secondWordCol] and originLang == checkRow[secondLangCol] and transLang == checkRow[firstLangCol]:
-			translatedWord = checkRow[firstWordCol]
-			found = True
-		else:
-			counter=counter+1
-	if not found:
-		return NOTFOUND
-	else:
-#		print(translatedWord)
-		return translatedWord
+        found = False
 
+	file = open("xarn_language.txt", "r")
+
+        for line in file:
+		line=line.rstrip()	
+		entry = line.split(",")
+                if theWord == entry[FIRSTWORD] and originLang == entry[FIRSTLANG] and transLang = entry[SECONDLAG]:
+                        translatedWord = entry[SECONDWORD]
+                        found = True
+                        break
+                elif theWord == entry[SECONDWORD] and originLang == entry[SECONDLANG] and transLang == entry[FIRSTLANG]:
+                        translatedWord = entry[FIRSTWORD]
+                        found = True
+                        break
+# needs an else here? if we do an iterator it would be ++
+
+        file.close();
+
+        if not found:
+                return NOTFOUND
+        else:
+                return translatedWord;
+	
+        
 def main():
 	form=cgi.FieldStorage()
 	hadError=False
-	if str(form.getvalue('theword')).lower() == NOVAL:
+
+#error handling
+        if str(form.getvalue('theword')).lower() == NOVAL:
 		hadError=True
 		theWord=MISSING
 	else:
@@ -90,12 +101,14 @@ def main():
 	else:
 		transLang=str(form.getvalue('newlanguage')).lower()
 
+#if there was an error then we display the problems
 	if hadError:
 		translatedWord=NOVAL
 		showTranslation(originLang, transLang, theWord, translatedWord)
 	else:
-		translationArray = store()
-		translatedWord = translate(translationArray, originLang, transLang, theWord)
+#otherwise, find the translated word using translate and display that
+#		translationArray = store()
+		translatedWord = translate(originLang, transLang, theWord)
 		showTranslation(originLang, transLang, theWord, translatedWord)
 
 if __name__=="__main__":main()
