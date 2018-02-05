@@ -34,7 +34,7 @@ What does your CGI do if the value of a field is blank?
     As with a completely missing field, the CGI checks for '', indicating no input and does the same thing (error indicated, translation not attempted, and the field along with "invalid" is shown in red).
 
 Did you test your CGI with a client such as curl?
-    Not yet
+    Yes, a little bit.
 
 What happens if one of the field values submitted is a string of 100 chars? 1000? 10000?
     The program can handle up to about 7500 characters total (among all three fields) so it should be able to handle 100 or 1000 character words and strings (spaces are conserved while newline characters are not). More characters results in a "URL length is too long" sever error.
