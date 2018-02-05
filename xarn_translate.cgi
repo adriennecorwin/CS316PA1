@@ -5,7 +5,7 @@ print("Content-type:text/html\n\n")
 import cgi
 import cgitb
 
-cgitb.enable()
+cgitb.enable() #enable cgi traceback for debugging
 
 #constants to detect and print errors
 NOTFOUND='unknown'
@@ -13,60 +13,60 @@ NOVAL='none'
 MISSING='invalid'
 
 #produces an HTML document to show user the results of their translation request
-def showTranslation(a, b, c, d, e):
+def showTranslation(origin, requested, givenWord, transWord, errorBool):
 	print("<style> .found {color:green} .notfound {color:red} .proper{color:blue} .improper{color:red}</style>") #error styling
 	print("<html><head><title>Translate</title></head><body>")
 
 #if any of the fields/their values are missing print field and word invalid in red
 #if the field have proper input, print them in blue
-	if e:
+	if errorBool:
 		print("Could not do translation. Missing information in red.<br>")
 	else:
 		print("Here is your translation!<br>")
 
-	if a==MISSING:
+	if origin==MISSING:
 		print("<p><span class=\"improper\">Origin Language: ")
 		print(MISSING)
 		print("</span>")
 	else:
 		print("<p><span class=\"proper\">Origin Language: </span>")
-		print("%s" % a)
+		print("%s" % origin)
 
-	if b==MISSING:
+	if requested==MISSING:
 		print("<p><span class=\"improper\">Requested Language: ")
 		print(MISSING)
 		print("</span>")
 	else:
 		print("<p><span class=\"proper\">Requested Language: </span>")
-		print("%s" % b)
+		print("%s" % requested)
 
-	if c==MISSING:
+	if givenWord==MISSING:
 		print("<p><span class=\"improper\">Original Word: ")
 		print(MISSING)
 		print("</span>")
 	else:
 		print("<p><span class=\"proper\">Origin Word: </span>")
-		print("%s" % c)
+		print("%s" % givenWord)
 
 #if translation could not be done bc of missing info, print field and the word invalid in red
 #if the translation could not be found in text file provided print unknown
 #if translation is found print word in green
-	if d==MISSING:
+	if transWord==MISSING:
 		print("<p><span class=\"improper\">Translation: </span>")
 		print("<span class=\"notfound\">")
 		print(MISSING)
 		print("</span>")
 		print("</p></body></html>")
-	elif d == NOTFOUND:
+	elif transWord == NOTFOUND:
 		print("<p><span class=\"proper\">Translation: </span>")
 		print("<span class=\"notfound\">")
-		print("%s" % d)
+		print("%s" % transWord)
 		print("</span>")
 		print("</p></body></html>")		
 	else:
 		print("<p><span class=\"proper\">Translation: </span>")
 		print("<span class=\"found\">")
-		print("%s" % d)
+		print("%s" % transWord)
 		print("</span>")
 		print("</p></body></html>")
 
@@ -87,27 +87,26 @@ def translate(originLang, transLang, theWord):
 
 	file = open("xarn_language.txt", "r")
 #goes through file line by line, checking for matching terms
-#ends if match is found or at end of file
 	line = file.readline()
-	while not found and line != '':
-		line=line.rstrip()	
-		entry = line.split(",")
+	while not found and line != '': #until translation found or file ends
+		line=line.rstrip() #remove nextline character at end of entry
+		entry = line.split(",") #split line of file input into the languages and words
+#               Since the file could have the given language as the first or second entry, must check both ways
+#               if the entry matches (either way) set translatedWord as the translation and mark as found
 		if theWord == entry[FIRSTWORD] and originLang == entry[FIRSTLANG] and transLang == entry[SECONDLANG]:
 			translatedWord = entry[SECONDWORD]
 			found = True
-			break
 		elif theWord == entry[SECONDWORD] and originLang == entry[SECONDLANG] and transLang == entry[FIRSTLANG]:
 			translatedWord = entry[FIRSTWORD]
 			found = True
-			break
-#if match was not found, go to next line
+#if match was not found, get the next line
 		else:
 			line = file.readline()
 
 	file.close();
 
 	if not found:
-		return NOTFOUND
+		return NOTFOUND # return const val NOTFOUND if the translation was not available
 	else:
 		return translatedWord;
 	
@@ -117,7 +116,9 @@ def main():
 #keeps track of whether there is a field/field value missing from user input
 	hadError=False
 
-#error handling if field/field value is missing
+#error handling, if field/field value is missing, set hadError as true and put const val MISSING as the value
+#otherwise, set the value as the one given from the form (all lower case)
+#should this value be stripped of any trailing whitespace in case?
 	if str(form.getvalue('theword')).lower() == NOVAL:
 		hadError=True
 		theWord=MISSING
@@ -142,7 +143,6 @@ def main():
 		showTranslation(originLang, transLang, theWord, translatedWord, hadError)
 	else:
 #otherwise, find the translated word using translate and display that
-#		translationArray = store()
 		translatedWord = translate(originLang, transLang, theWord)
 		showTranslation(originLang, transLang, theWord, translatedWord, hadError)
 
